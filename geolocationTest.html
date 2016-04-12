@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>geolocationTest</title>
+</head>
+<body>
+	<input type="button" id="btnLocation" value="获取位置信息">
+</body>
+<script src="js/jquery-2.2.3.min.js"></script>
+<script>
+	//检测是否支持地理信息
+	function isSupportGeo(){
+		return (navigator.geolocation != null)
+	}
+	//绑定click事件
+	$("#btnLocation").click(function(){
+		if (!isSupportGeo) {
+			alert("浏览器不支持地理位置定位！");
+		}else{
+			navigator.geolocation.getCurrentPosition(doSucc, doFail);
+		}
+	});
+	//处理成功
+	function doSucc(position){
+		//alert("成功获取地理位置！");
+		alert("成功获取地理位置，您当前所处的位置位于经度："+position.coords.longitude+"纬度："+position.coords.latitude);
+	}
+	//处理失败
+	function doFail(error){
+		var errors = ["拒绝地理信息服务","获取不到地理信息","获取信息超时"];
+		alert(errors[error.code+1]);
+	}
+</script>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>frameCartoon</title>
+</head>
+<body>
+	<h2>图片动画</h2>
+	<img src="img/mr.jpg" id="img1">
+	<input type="button" id="btnGo" value="开始"><br>
+	<canvas id="c1" width="320" height="200"></canvas><br>
+</body>
+	<script>
+		//是否开始动画
+		var isAnimStart = false, animHandle = null;//动画句柄
+		//定义每帧图像的宽度和高度
+		var fWidth = 16, fHeight = 28;
+		//保存每帧动画起始坐标
+		var frames = [];
+		for(var i = 0; i < 3; i++){
+			frames[i] = [5+i*fWidth,17];
+		}
+		function $(id){
+			return document.getElementById(id);
+		}
+		//开始
+		function init(){
+			//注册GO按钮事件
+			$("btnGo").onclick = function(){
+				//如果没有开始动画，则开始动画
+				if(!isAnimStart){
+					//获取canvas上下文
+					var ctx = $("c1").getContext("2d");
+					//设置当前帧序号
+					var fIndex = 0;
+					//找到canvas的中点
+					var cX = 160, cY = 100;
+					animHandle = setInterval(function(){
+						//先清空画布
+						ctx.clearRect(0, 0, 320, 200);
+						//绘制当前帧
+						ctx.drawImage(img1, frames[fIndex][0], frames[fIndex][1], fWidth, fHeight, cX-fWidth*2, cY-fHeight*2, fWidth*4, fHeight*4);
+						//计算下一帧
+						fIndex++;
+						if(fIndex>=frames.length){
+							fIndex = 0;
+						}
+					},100)
+					$("btnGo").value = "停止";
+					isAnimStart = true;
+				}else{
+					$("btnGo").value = "开始";
+					clearInterval(animHandle);
+					isAnimStart = false;
+				}
+			}
+		}
+		init();
+	</script>
+</html>
